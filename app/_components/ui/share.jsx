@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react'
 import { Button } from './button';
 import { Copy, Share2, X } from 'lucide-react';

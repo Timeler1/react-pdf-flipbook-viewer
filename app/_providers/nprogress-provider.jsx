@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import config from '@/tailwind.config.js';
 import { Suspense } from 'react';

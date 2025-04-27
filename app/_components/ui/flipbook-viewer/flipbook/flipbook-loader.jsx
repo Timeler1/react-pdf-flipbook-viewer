@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useState } from 'react'
+import React, { forwardRef, memo, useCallback} from 'react'
 import HTMLFlipBook from 'react-pageflip'
 import PdfPage from './pdf-page'
 import { useDebounce } from '@/app/_hooks/use-debounce';
@@ -61,7 +61,6 @@ const FlipbookLoader = forwardRef(({ pdfDetails, scale, viewerStates, setViewerS
                     ))
                 }
             </HTMLFlipBook >
-            {/* <p className="text-background absolute z-50 top-0 -left-10">{viewRange[0] + '-' + viewRange[1]}</p> */}
         </div>
     )
 })

@@ -1,11 +1,9 @@
 
-```md
+
 # React PDF Flipbook Viewer
 
 This project is a React-based PDF flipbook viewer that allows users to view PDF documents in a flipbook format. It is built using Next.js and various other libraries to provide a seamless and interactive experience.
-Here is the codesandbox Link-
 
-https://codesandbox.io/p/github/mohitkumawat310/react-pdf-flipbook-viewer/master?import=true
 
 ## Getting Started
 
@@ -84,12 +82,6 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
 ## Special Thanks
 
 Special thanks to the following libraries that made this project possible:
@@ -107,4 +99,3 @@ Special thanks to the following libraries that made this project possible:
 - [lucide-react](https://github.com/lucide-icons/lucide)
 - [keyboardjs](https://github.com/RobertWHurst/KeyboardJS)
 - [react-share](https://github.com/nygardk/react-share)
-- [sonner](https://github.com/emilkowalski/sonner)

@@ -1,0 +1,1 @@
+export { default as FlipbookViewer } from "./components/flipbook-viewer/flipbook-viewer";

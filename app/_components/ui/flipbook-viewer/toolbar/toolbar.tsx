@@ -60,6 +60,7 @@ const Toolbar = ({ flipbookRef, containerRef, screenfull, pdfDetails, viewerStat
                 flipbookRef={flipbookRef}
                 pdfDetails={pdfDetails}
                 viewerStates={viewerStates}
+                setViewerStates={setViewerStates}
             />
             <div className="flex items-center gap-2 pb-2 max-xl:pt-2">
                 <div className="hidden lg:block flex-1"></div>

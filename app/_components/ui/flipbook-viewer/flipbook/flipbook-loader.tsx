@@ -12,7 +12,10 @@ type FlipbookLoaderProps = {
         currentPageIndex: number,
         zoomScale: number,
     },
-    setViewerStates: any,
+    setViewerStates: Dispatch<SetStateAction<{
+        currentPageIndex: number;
+        zoomScale: number;
+    }>>,
     viewRange: number[],
     setViewRange: Dispatch<SetStateAction<number[]>>
 }
@@ -58,7 +61,7 @@ const FlipbookLoader = forwardRef<HTMLDivElement, FlipbookLoaderProps>(({ pdfDet
                 onFlip={onFlip}
                 disableFlipByClick={width < 768 ? true : false}
                 className={cn(viewerStates.zoomScale > 1 && 'pointer-events-none md:pointer-events-none')}
-           >
+            >
                 {
                     Array.from({ length: pdfDetails.totalPages }, (_, index) => (
                         <MemoizedPdfPage

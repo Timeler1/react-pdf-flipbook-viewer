@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Button } from './button';
 import { Copy, Share2, X } from 'lucide-react';
 import {
@@ -10,7 +10,7 @@ import {
 } from "@/app/_components/ui/dropdown-menu"
 import { WhatsappShareButton, FacebookShareButton, TwitterShareButton, LinkedinShareButton } from 'react-share';
 
-const Share = ({ asChild, shareUrl, children }) => {
+const Share = ({ asChild, shareUrl, children }: { asChild?: boolean, shareUrl: string, children?: ReactNode }) => {
     const [url, setUrl] = useState(shareUrl || '')
     const [copied, setCopied] = useState(false)
     // Copy link to clipboard >>>>>>>>>

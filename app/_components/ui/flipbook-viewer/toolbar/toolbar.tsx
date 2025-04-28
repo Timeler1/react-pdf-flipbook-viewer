@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, RefObject, Dispatch, SetStateAction } from 'react';
 import { Button } from '../../button';
 import { ChevronLeft, ChevronRight, Maximize, Minimize } from 'lucide-react';
 import keyboardjs from 'keyboardjs';
@@ -6,8 +6,23 @@ import Zoom from './zoom';
 import SliderNav from './slider-nav/slider-nav';
 import useScreenSize from '@/app/_hooks/use-screensize';
 import Share from '../../share';
-
-const Toolbar = ({ flipbookRef, containerRef, screenfull, pdfDetails, viewerStates, shareUrl, disableShare }) => {
+type ToolbarProps = {
+    flipbookRef: any,
+    containerRef: RefObject<HTMLDivElement>,
+    screenfull: any,
+    pdfDetails: any,
+    viewerStates: {
+        currentPageIndex: number;
+        zoomScale: number;
+    },
+    shareUrl: string,
+    disableShare: boolean,
+    setViewerStates: Dispatch<SetStateAction<{
+        currentPageIndex: number;
+        zoomScale: number;
+    }>>
+}
+const Toolbar = ({ flipbookRef, containerRef, screenfull, pdfDetails, viewerStates, shareUrl, disableShare, setViewerStates }: ToolbarProps) => {
     const { width: screenWidth } = useScreenSize();
     const pagesInFlipView = ((viewerStates.currentPageIndex + 1) % 2 === 0 && (viewerStates.currentPageIndex + 1) !== pdfDetails.totalPages)
         ? `${(viewerStates.currentPageIndex + 1)} - ${viewerStates.currentPageIndex + 2}`
@@ -18,8 +33,8 @@ const Toolbar = ({ flipbookRef, containerRef, screenfull, pdfDetails, viewerStat
         if (screenfull.isEnabled) {
             screenfull.toggle(containerRef.current, { navigationUI: "hide" });
         }
-        screenfull.on('error', (event) => {
-            alert('Failed to enable fullscreen', event);
+        screenfull.on('error', (event: any) => {
+            alert('Failed to enable fullscreen' + event);
         });
     }, [screenfull, containerRef]);
 
@@ -45,7 +60,6 @@ const Toolbar = ({ flipbookRef, containerRef, screenfull, pdfDetails, viewerStat
                 flipbookRef={flipbookRef}
                 pdfDetails={pdfDetails}
                 viewerStates={viewerStates}
-                screenWidth={screenWidth}
             />
             <div className="flex items-center gap-2 pb-2 max-xl:pt-2">
                 <div className="hidden lg:block flex-1"></div>

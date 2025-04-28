@@ -1,12 +1,22 @@
 'use client';
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, forwardRef, Dispatch, SetStateAction } from 'react';
 import useRefSize from '@/app/_hooks/use-ref-size';
 import FlipbookLoader from './flipbook-loader';
 import { cn } from '@/app/_lib/utils';
 import { TransformComponent } from 'react-zoom-pan-pinch';
-import screenfull from 'screenfull';
-
-const Flipbook = memo(({ viewerStates, setViewerStates, flipbookRef, pdfDetails }) => {
+type FlipbookProps = {
+    viewerStates: {
+        currentPageIndex: number,
+        zoomScale: number,
+    },
+    setViewerStates: Dispatch<SetStateAction<{
+        currentPageIndex: number;
+        zoomScale: number;
+    }>>,
+    screenfull: any,
+    pdfDetails: any
+}
+const Flipbook = forwardRef<HTMLDivElement, FlipbookProps>(({ viewerStates, setViewerStates, screenfull, pdfDetails }, refOld) => {
     const { ref, width, height, refreshSize } = useRefSize();
     const [scale, setScale] = useState(1); // Max scale for flipbook
     const [wrapperCss, setWrapperCss] = useState({});
@@ -56,7 +66,7 @@ const Flipbook = memo(({ viewerStates, setViewerStates, flipbookRef, pdfDetails 
                     {pdfDetails && scale && (
                         <div style={wrapperCss}>
                             <FlipbookLoader
-                                ref={flipbookRef}
+                                ref={refOld}
                                 pdfDetails={pdfDetails}
                                 scale={scale}
                                 viewRange={viewRange}

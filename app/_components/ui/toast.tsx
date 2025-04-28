@@ -1,21 +1,25 @@
 "use client";
-import * as React from "react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/app/_lib/utils"
+import { forwardRef, ReactNode } from "react";
 
 const ToastProvider = ToastPrimitives.Provider
+type GenericToastProps = {
+    className?: string,
+    children?: ReactNode
+}
 
-const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
+const ToastViewport = forwardRef<HTMLOListElement, GenericToastProps>(({ className, ...children }, ref) => (
     <ToastPrimitives.Viewport
         ref={ref}
         className={cn(
             "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
             className
         )}
-        {...props} />
+        {...children} />
 ))
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
@@ -34,29 +38,20 @@ const toastVariants = cva(
         },
     }
 )
-
-const Toast = React.forwardRef(({ className, variant, ...props }, ref) => {
+type ToastProps = GenericToastProps & {
+    variant: "default" | "destructive"
+}
+const Toast = forwardRef<HTMLLIElement, ToastProps>(({ className, variant, ...children }, ref) => {
     return (
         (<ToastPrimitives.Root
             ref={ref}
             className={cn(toastVariants({ variant }), className)}
-            {...props} />)
+            {...children} />)
     );
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
-    <ToastPrimitives.Action
-        ref={ref}
-        className={cn(
-            "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-            className
-        )}
-        {...props} />
-))
-ToastAction.displayName = ToastPrimitives.Action.displayName
-
-const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
+const ToastClose = forwardRef<HTMLButtonElement, GenericToastProps>(({ className, ...children }, ref) => (
     <ToastPrimitives.Close
         ref={ref}
         className={cn(
@@ -64,23 +59,26 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
             className
         )}
         toast-close=""
-        {...props}>
+        {...children}>
         <Cross2Icon className="h-4 w-4" />
     </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName
 
-const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
+const ToastTitle = forwardRef<HTMLDivElement, GenericToastProps>(({ className, ...children }, ref) => (
     <ToastPrimitives.Title
         ref={ref}
         className={cn("text-sm font-semibold [&+div]:text-xs", className)}
-        {...props} />
+        {...children} />
 ))
 ToastTitle.displayName = ToastPrimitives.Title.displayName
 
-const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
-    <ToastPrimitives.Description ref={ref} className={cn("text-sm opacity-90", className)} {...props} />
+const ToastDescription = forwardRef<HTMLDivElement, GenericToastProps>(({ className, ...children }, ref) => (
+    <ToastPrimitives.Description
+        ref={ref}
+        className={cn("text-sm opacity-90", className)}
+        {...children} />
 ))
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
-export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastClose, ToastAction };
+export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastClose };

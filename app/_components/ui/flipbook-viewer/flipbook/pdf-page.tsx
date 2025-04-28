@@ -1,8 +1,15 @@
 import { cn } from "@/app/_lib/utils";
-import React, { forwardRef, memo } from "react";
+import { forwardRef, memo } from "react";
 import { Page } from "react-pdf";
+type PdfProps = { 
+    page: number, 
+    height: number, 
+    zoomScale: number, 
+    isPageInView: boolean, 
+    isPageInViewRange: boolean 
+}
 
-const PdfPage = forwardRef(({ page, height, zoomScale, isPageInView, isPageInViewRange }, ref) => {
+const PdfPage = forwardRef<HTMLDivElement, PdfProps>(({ page, height, zoomScale, isPageInView, isPageInViewRange }, ref) => {
     return (
         <div ref={ref} className={cn(page % 2 === 0 ? 'bg-background' : 'bg-muted')} >
             {isPageInViewRange && (

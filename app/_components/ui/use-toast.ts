@@ -1,15 +1,17 @@
 "use client";
+
+import { useEffect, useState } from "react";
+
 // Inspired by react-hot-toast library
-import * as React from "react"
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
-const actionTypes = {
-    ADD_TOAST: "ADD_TOAST",
-    UPDATE_TOAST: "UPDATE_TOAST",
-    DISMISS_TOAST: "DISMISS_TOAST",
-    REMOVE_TOAST: "REMOVE_TOAST"
+enum actionTypes {
+    ADD_TOAST = "ADD_TOAST",
+    UPDATE_TOAST = "UPDATE_TOAST",
+    DISMISS_TOAST = "DISMISS_TOAST",
+    REMOVE_TOAST = "REMOVE_TOAST"
 }
 
 let count = 0
@@ -37,7 +39,7 @@ const addToRemoveQueue = (toastId) => {
     toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state, action) => {
+export const reducer = (state: { toasts: any; }, action: { type?: actionTypes; toast?: any; toastId: any; }) => {
     switch (action.type) {
         case "ADD_TOAST":
             return {
@@ -133,9 +135,9 @@ function toast({
 }
 
 function useToast() {
-    const [state, setState] = React.useState(memoryState)
+    const [state, setState] = useState(memoryState)
 
-    React.useEffect(() => {
+    useEffect(() => {
         listeners.push(setState)
         return () => {
             const index = listeners.indexOf(setState)

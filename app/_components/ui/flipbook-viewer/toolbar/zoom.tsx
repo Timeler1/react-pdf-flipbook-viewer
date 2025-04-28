@@ -1,9 +1,8 @@
-import React from 'react'
 import { useControls } from 'react-zoom-pan-pinch';
 import { Button } from '../../button';
 import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
 
-const Zoom = ({ zoomScale, screenWidth }) => {
+const Zoom = ({ zoomScale, screenWidth }: { zoomScale: number, screenWidth: number }) => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
     return (
         <>

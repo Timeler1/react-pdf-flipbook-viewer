@@ -1,21 +1,31 @@
-import React, { forwardRef, memo, useCallback} from 'react'
+import { Dispatch, forwardRef, memo, SetStateAction, useCallback } from 'react'
 import HTMLFlipBook from 'react-pageflip'
 import PdfPage from './pdf-page'
 import { useDebounce } from '@/app/_hooks/use-debounce';
 import { cn } from '@/app/_lib/utils';
 import useScreenSize from '@/app/_hooks/use-screensize';
 const MemoizedPdfPage = memo(PdfPage)
-
-const FlipbookLoader = forwardRef(({ pdfDetails, scale, viewerStates, setViewerStates, viewRange, setViewRange }, ref) => {
+type FlipbookLoaderProps = {
+    pdfDetails: any,
+    scale: number,
+    viewerStates: {
+        currentPageIndex: number,
+        zoomScale: number,
+    },
+    setViewerStates: any,
+    viewRange: number[],
+    setViewRange: Dispatch<SetStateAction<number[]>>
+}
+const FlipbookLoader = forwardRef<HTMLDivElement, FlipbookLoaderProps>(({ pdfDetails, scale, viewerStates, setViewerStates, viewRange, setViewRange }, ref) => {
     const { width } = useScreenSize();
     const debouncedZoom = useDebounce(viewerStates.zoomScale, 500);
     // Check if page is in View range or in view window >>>>>>>>
-    const isPageInViewRange = (index) => { return index >= viewRange[0] && index <= viewRange[1] };
-    const isPageInView = (index) => { return viewerStates.currentPageIndex === index || viewerStates.currentPageIndex + 1 === index };
+    const isPageInViewRange = (index: number) => { return index >= viewRange[0] && index <= viewRange[1] };
+    const isPageInView = (index: number) => { return viewerStates.currentPageIndex === index || viewerStates.currentPageIndex + 1 === index };
 
     // Update pageViewRange on page flip >>>>>>>>
-    const onFlip = useCallback((e) => {
-        let newViewRange;
+    const onFlip = useCallback((e: { data: number; }) => {
+        let newViewRange: number[];
         if (e.data > viewerStates.currentPageIndex) {
             newViewRange = [viewRange[0], Math.max(Math.min(e.data + 4, pdfDetails.totalPages), viewRange[1])]
         } else if (e.data < viewerStates.currentPageIndex) {
@@ -32,6 +42,7 @@ const FlipbookLoader = forwardRef(({ pdfDetails, scale, viewerStates, setViewerS
 
     return (
         <div className="relative">
+            {/*@ts-ignore*/}
             <HTMLFlipBook
                 ref={ref}
                 key={scale}
@@ -47,7 +58,7 @@ const FlipbookLoader = forwardRef(({ pdfDetails, scale, viewerStates, setViewerS
                 onFlip={onFlip}
                 disableFlipByClick={width < 768 ? true : false}
                 className={cn(viewerStates.zoomScale > 1 && 'pointer-events-none md:pointer-events-none')}
-            >
+           >
                 {
                     Array.from({ length: pdfDetails.totalPages }, (_, index) => (
                         <MemoizedPdfPage

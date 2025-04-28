@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Page } from 'react-pdf';
 
-const HoverItem = memo(({ slide, totalPages, totalSlides }) => {
+const HoverItem = memo(({ slide, totalPages, totalSlides }: { slide: number, totalPages: number, totalSlides: number }) => {
     return (
         <div>
             <p className="text-xs text-background pb-1">
@@ -27,7 +27,6 @@ const HoverItem = memo(({ slide, totalPages, totalSlides }) => {
                             renderAnnotationLayer={false}
                             renderForms={false}
                             renderTextLayer={false}
-                            style
                             _className={index + 1 === slide * 2 - 1 ? 'block' : 'hidden'}
                         />
                     }

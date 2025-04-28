@@ -1,5 +1,5 @@
 import { cn } from '@/app/_lib/utils';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import HoverItem from './hover-item';
 import { useDebounce } from '@/app/_hooks/use-debounce';
@@ -29,7 +29,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }) => {
     }, [value, maxSlide, dragging]);
 
     // Handle dragging the thumb >>>>>>>>>
-    const handleDrag = (e, data) => {
+    const handleDrag = (e: any, data: { x: any; node: { clientWidth: any; }; }) => {
         if (sliderRef.current) {
             const sliderRect = sliderRef.current.getBoundingClientRect();
             const sliderWidth = sliderRect.width;
@@ -50,7 +50,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }) => {
     };
 
     // Handle onClick to change slide >>>>>>>>>
-    const handleSlideChange = (e) => {
+    const handleSlideChange = (e: { clientX: number; }) => {
         if (sliderRef.current) {
             const rect = sliderRef.current.getBoundingClientRect();
             const clickedValue = Math.min(
@@ -62,7 +62,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }) => {
     }
 
     // Handle hover value tooltip >>>>>>>>>
-    const handlePointerMove = (e) => {
+    const handlePointerMove = (e: { clientX: number; clientY: number; }) => {
         if (sliderRef.current && tooltipRef.current && !dragging) {
             const rect = sliderRef.current.getBoundingClientRect();
             const hoverValue = Math.min(

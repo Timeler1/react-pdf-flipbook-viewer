@@ -4,6 +4,7 @@ import FlipbookLoader from './flipbook-loader';
 import { cn } from './../../../lib/utils';
 import { TransformComponent } from 'react-zoom-pan-pinch';
 import React from 'react';
+import { PDFDetails } from '../../../lib/definitions';
 type FlipbookProps = {
     viewerStates: {
         currentPageIndex: number,
@@ -14,7 +15,7 @@ type FlipbookProps = {
         zoomScale: number;
     }>>,
     screenfull: any,
-    pdfDetails: any
+    pdfDetails: PDFDetails
 }
 const Flipbook = forwardRef<HTMLDivElement, FlipbookProps>(({ viewerStates, setViewerStates, screenfull, pdfDetails }, refOld) => {
     const { ref, width, height, refreshSize } = useRefSize();

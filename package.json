@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "postbuild": "cpx \"src/components/flipbook-viewer/pad-loading/style.css\" dist/components/flipbook-viewer/pad-loading/  ",
     "prepare": "npm run build",
     "start": "npm run build && npm run dev",
     "dev": "tsc --watch",

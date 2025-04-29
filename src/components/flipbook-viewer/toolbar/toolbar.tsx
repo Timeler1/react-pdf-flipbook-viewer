@@ -7,11 +7,12 @@ import SliderNav from './slider-nav/slider-nav';
 import useScreenSize from './../../../hooks/use-screensize';
 import Share from '../../share';
 import React from 'react';
+import { PDFDetails } from '../../../lib/definitions';
 type ToolbarProps = {
     flipbookRef: any,
     containerRef: RefObject<HTMLDivElement | null>,
     screenfull: any,
-    pdfDetails: any,
+    pdfDetails: PDFDetails,
     viewerStates: {
         currentPageIndex: number;
         zoomScale: number;

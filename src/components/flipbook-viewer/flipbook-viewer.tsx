@@ -11,12 +11,13 @@ import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import React from "react";
+import { PDFDetails } from "../../lib/definitions";
 
 const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare = false }: { pdfUrl: string, shareUrl?: string, className?: string, disableShare?: boolean }) => {
     const containerRef = useRef<HTMLDivElement>(null); // For full screen container
     const flipbookRef = useRef<HTMLDivElement>(null);
     const [pdfLoading, setPdfLoading] = useState(true);
-    const [pdfDetails, setPdfDetails] = useState<{ totalPages: number, width: number, height: number } | null>(null);;
+    const [pdfDetails, setPdfDetails] = useState<PDFDetails | null>(null);;
     const [viewerStates, setViewerStates] = useState({
         currentPageIndex: 0,
         zoomScale: 1,

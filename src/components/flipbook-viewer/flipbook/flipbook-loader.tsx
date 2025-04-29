@@ -4,9 +4,10 @@ import PdfPage from './pdf-page'
 import { useDebounce } from './../../../hooks/use-debounce';
 import useScreenSize from './../../../hooks/use-screensize';
 import React from 'react';
+import { PDFDetails } from '../../../lib/definitions';
 const MemoizedPdfPage = memo(PdfPage)
 type FlipbookLoaderProps = {
-    pdfDetails: any,
+    pdfDetails: PDFDetails,
     scale: number,
     viewerStates: {
         currentPageIndex: number,

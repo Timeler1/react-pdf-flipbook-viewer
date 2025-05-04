@@ -4,23 +4,15 @@ import { forwardRef, ReactNode } from "react"
 import React from "react";
 
 const DropdownMenu = DropdownMenuPrimitive.Root
+const DropdownMenuTrigger = forwardRef<
+    HTMLButtonElement,
+    DropdownMenuPrimitive.DropdownMenuTriggerProps
+>(({ children, ...props }, ref) => (
+    <DropdownMenuPrimitive.Trigger ref={ref} asChild {...props}>
+        {children}
+    </DropdownMenuPrimitive.Trigger>
+));
 
-type DropdownMenuTriggerProps = GenericDropdownProps & {
-    asChild?: boolean;
-};
-
-const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTriggerProps>(
-    ({ className, children, asChild = false, ...props }, ref) => (
-        <DropdownMenuPrimitive.Trigger
-            ref={ref}
-            className={cn(className ?? '')}
-            asChild={asChild}
-            {...props}
-        >
-            {children}
-        </DropdownMenuPrimitive.Trigger>
-    )
-);
 DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName;
 type GenericDropdownProps = {
     className?: string,

@@ -29,7 +29,7 @@ const Share = ({ asChild, shareUrl, children }: { asChild?: boolean, shareUrl?: 
     }, [shareUrl])
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild={asChild}>
+            <DropdownMenuTrigger>
                 {asChild ? (
                     children
                 ) : (

@@ -13,6 +13,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }: { ma
     const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 });
     const sliderRef = useRef<HTMLDivElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
+    const nodeRef = useRef<HTMLDivElement>(null);
 
     // Update thumb position on value & screen size change >>>>>>>>>
     useEffect(() => {
@@ -42,7 +43,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }: { ma
             );
             setValue(newValue);
             setHoverValue(newValue);
-            if (tooltipRef?.current !== null){
+            if (tooltipRef?.current !== null) {
                 const tooltipWidth = tooltipRef.current.getBoundingClientRect().width;
                 const tooltipHeight = tooltipRef.current.getBoundingClientRect().height;
                 const tooltipLeft = Math.max(0, Math.min(offsetX - tooltipWidth / 2, sliderWidth - tooltipWidth));
@@ -112,7 +113,9 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }: { ma
                 onPointerLeave={handlePointerLeave}
                 onPointerCancel={handlePointerLeave}
             >
-                <Draggable
+                
+                <Draggable //@ts-ignore
+                    nodeRef={nodeRef}
                     axis="x"
                     bounds="parent"
                     position={{ x: thumbPosition, y: 0 }}
@@ -120,7 +123,7 @@ const Slider = ({ maxSlide = 10, currentSlide, onSlideChange, totalPages }: { ma
                     onDrag={handleDrag}
                     onStop={() => setDragging(false)}
                 >
-                    <div className="absolute z-20 size-1 bg-primary rounded-full cursor-pointer">
+                    <div ref={nodeRef} className="absolute z-20 size-1 bg-primary rounded-full cursor-pointer">
                         <div className={cn("size-3 hover:size-4 bg-primary absolute -top-1 hover:-top-1.5 -left-1 hover:-left-1.5 rounded-full transition-all", dragging ? 'w-3 h-3 -left-1.5 -top-1.5 rounded-full' : '')}></div>
                     </div>
                 </Draggable>

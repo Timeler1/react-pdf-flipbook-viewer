@@ -29,12 +29,14 @@ const Share = ({ asChild, shareUrl, children }: { asChild?: boolean, shareUrl?: 
     }, [shareUrl])
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                {asChild ?
+            <DropdownMenuTrigger asChild={asChild}>
+                {asChild ? (
                     children
-                    :
-                    <Button variant='secondary' size='icon' className='size-8 min-w-8'><Share2 className="size-4 min-w-4" /></Button>
-                }
+                ) : (
+                    <Button variant='secondary' size='icon' className='size-8 min-w-8'>
+                        <Share2 className="size-4 min-w-4" />
+                    </Button>
+                )}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuItem onClick={copyLink} className='flex items-center gap-2 text-sm cursor-pointer'>

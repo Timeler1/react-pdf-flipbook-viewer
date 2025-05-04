@@ -5,7 +5,23 @@ import React from "react";
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
+type DropdownMenuTriggerProps = GenericDropdownProps & {
+    asChild?: boolean;
+};
+
+const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTriggerProps>(
+    ({ className, children, asChild = false, ...props }, ref) => (
+        <DropdownMenuPrimitive.Trigger
+            ref={ref}
+            className={cn(className ?? '')}
+            asChild={asChild}
+            {...props}
+        >
+            {children}
+        </DropdownMenuPrimitive.Trigger>
+    )
+);
+DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName;
 type GenericDropdownProps = {
     className?: string,
     onClick?: () => void,

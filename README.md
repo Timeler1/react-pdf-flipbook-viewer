@@ -63,7 +63,7 @@ export default Page
 | `disableShare`| `boolean` | Flag to disable the share button.                |
 
 ## Local Development
-You will need to have cpx installed as its used for the build. You can run the following to setup a development environment:
+You can run the following to setup a development environment:
 
 ```bash
 git clone https://github.com/Timeler1/react-pdf-flipbook-viewer
@@ -84,10 +84,8 @@ Thanks also to the libraries used in this Project:
 - [react-pageflip](https://github.com/Nodlik/react-pageflip)
 - [react-zoom-pan-pinch](https://github.com/prc5/react-zoom-pan-pinch)
 - [screenfull](https://github.com/sindresorhus/screenfull.js)
-- [radix-ui](https://www.radix-ui.com/)
 - [tailwindcss](https://tailwindcss.com/)
 - [class-variance-authority](https://github.com/joe-bell/class-variance-authority)
 - [clsx](https://github.com/lukeed/clsx)
 - [lucide-react](https://github.com/lucide-icons/lucide)
-- [keyboardjs](https://github.com/RobertWHurst/KeyboardJS)
 - [react-share](https://github.com/nygardk/react-share)

@@ -5,7 +5,7 @@ import Flipbook from "./flipbook/flipbook";
 import screenfull from 'screenfull';
 import { TransformWrapper } from "react-zoom-pan-pinch";
 import { Document } from "react-pdf";
-import PdfLoading from "./pad-loading/pdf-loading";
+import PdfLoading from "./pdf-loading/pdf-loading";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';

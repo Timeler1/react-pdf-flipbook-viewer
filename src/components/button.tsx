@@ -1,8 +1,6 @@
-import { Slot } from "@radix-ui/react-slot"
-import { cva } from "class-variance-authority";
-import { cn } from "./../lib/utils"
-import { forwardRef, ReactNode } from "react";
-import React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "./../lib/utils";
+import React, { forwardRef, ButtonHTMLAttributes, ReactElement } from "react";
 
 const buttonVariants = cva(
     "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -27,27 +25,61 @@ const buttonVariants = cva(
             size: "default",
         },
     }
-)
-type ButtonProps = { 
-    className: string, 
-    variant: "default" | "secondary", 
-    size: "default" | "xs" | "sm" | "lg" | "icon", 
-    onClick?: () => void, 
-    disabled?:boolean, 
-    asChild?: boolean, 
-    children: ReactNode 
-}
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size, onClick, disabled = false, asChild = false, ...children }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    return (
-        (<Comp
-            className={cn('h-9', buttonVariants({ variant, size, className }))}
-            ref={ref}
-            onClick={onClick}
-            disabled={disabled}
-            {...children} />)
-    );
-})
-Button.displayName = "Button"
+);
 
-export { Button, buttonVariants }
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> { // Provides variant and size from CVA
+  asChild?: boolean;
+}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, variant, size, asChild = false, children, ...props }, ref) => {
+
+    const cvaGeneratedClasses = buttonVariants({ variant, size });
+
+    if (asChild) {
+        if (React.Children.count(children) !== 1 || !React.isValidElement(children)) {
+            console.error(
+                "Button component with `asChild` prop expects a single ReactElement child."
+            );
+            throw new Error(
+                "Button component with `asChild` prop expects a single ReactElement child."
+            );
+        }
+        const childElement = children as ReactElement<any>;
+
+        // Merge props:
+        // 1. Start with the child's original props.
+        // 2. Add/override with props passed directly to the Button component (like `onClick`, `disabled`, `type` from `...props`).
+        // 3. Merge `className` carefully.
+        // 4. Forward the `ref`.
+        const mergedProps = {
+            ...childElement.props, // Child's original props
+            ...props,              // Props passed to Button (e.g., onClick, disabled, type)
+            className: cn(
+                cvaGeneratedClasses,      // Base styles from CVA
+                className ?? '',                // Classes passed directly to <Button className="...">
+                childElement.props.className // Child's original classes
+            ),
+            ref: ref,              // Forward the ref to the child element
+        };
+
+        return React.cloneElement(childElement, mergedProps);
+    }
+
+    // If not asChild, render a standard <button> element
+    return (
+        <button
+            className={cn(cvaGeneratedClasses, className ?? '')}
+            ref={ref}
+            {...props}
+        >
+            {children} {/* Render children inside the button */}
+        </button>
+    );
+});
+
+Button.displayName = "Button";
+
+export { Button, buttonVariants };

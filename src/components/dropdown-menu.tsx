@@ -1,67 +1,95 @@
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { cn } from "./../lib/utils"
-import { forwardRef, ReactNode } from "react"
-import React from "react";
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import { cn } from "./../lib/utils"; // Assuming this path is correct
 
-const DropdownMenu = DropdownMenuPrimitive.Root
-const DropdownMenuTrigger = forwardRef<
-    HTMLButtonElement,
-    DropdownMenuPrimitive.DropdownMenuTriggerProps
->(({ children, ...props }, ref) => (
-    <DropdownMenuPrimitive.Trigger ref={ref} asChild {...props}>
-        {children}
-    </DropdownMenuPrimitive.Trigger>
-));
+interface SimpleDropdownProps {
+    trigger: ReactNode;
+    children: (closeDropdown: () => void) => ReactNode; // Children is a render prop
+    contentClassName?: string;
+    contentStyle?: React.CSSProperties;
+    align?: 'left' | 'right'; // Optional alignment for the dropdown content
+}
 
-DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName;
-type GenericDropdownProps = {
-    className?: string,
-    onClick?: () => void,
-    children?: ReactNode
-}
-type DropdownMenuContentProps = GenericDropdownProps & {
-    sideOffset?: number,
-}
-const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuContentProps>(
-    ({ sideOffset = 4, className, children, ...props }, ref) => (
-        <DropdownMenuPrimitive.Portal>
-            <DropdownMenuPrimitive.Content
-                ref={ref}
-                sideOffset={sideOffset}
-                className={cn(
-                    "z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-popover p-2 text-popover-foreground shadow-sm",
-                    "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-                    className ?? ''
-                )}
-                {...props}
+export const Dropdown = ({
+    trigger,
+    children,
+    contentClassName,
+    contentStyle,
+    align = 'left'
+}: SimpleDropdownProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    const toggleDropdown = () => setIsOpen(prev => !prev);
+    const closeDropdown = () => setIsOpen(false);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                wrapperRef.current &&
+                !wrapperRef.current.contains(event.target as Node)
+            ) {
+                closeDropdown();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+            const handleEsc = (event: KeyboardEvent) => {
+                if (event.key === 'Escape') {
+                    closeDropdown();
+                }
+            };
+            document.addEventListener('keydown', handleEsc);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+                document.removeEventListener('keydown', handleEsc);
+            };
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
+
+    const defaultContentStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '100%',
+        left: align === 'left' ? 0 : undefined,
+        right: align === 'right' ? 0 : undefined,
+        zIndex: 50,
+        marginTop: '4px', // Default offset
+        ...contentStyle
+    };
+
+    return (
+        <div className="relative inline-block" ref={wrapperRef}>
+            <div
+                onClick={toggleDropdown}
+                className="cursor-pointer"
+                role="button"
+                aria-haspopup="menu"
+                aria-expanded={isOpen}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleDropdown();
+                    }
+                }}
             >
-                {children}
-            </DropdownMenuPrimitive.Content>
-        </DropdownMenuPrimitive.Portal>
-    )
-)
-
-DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
-
-const DropdownMenuItem = forwardRef<HTMLDivElement, GenericDropdownProps>(
-    ({ className, children, ...props }, ref) => (
-        <DropdownMenuPrimitive.Item
-            ref={ref}
-            className={cn(
-                "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                className ?? ''
+                {trigger}
+            </div>
+            {isOpen && (
+                <div
+                    className={cn(
+                        "min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+                        contentClassName ?? ''
+                    )}
+                    style={defaultContentStyle}
+                    role="menu"
+                >
+                    {children(closeDropdown)}
+                </div>
             )}
-            {...props}
-        >
-            {children}
-        </DropdownMenuPrimitive.Item>
-    )
-)
-DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
-
-export {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem
-}
+        </div>
+    );
+};

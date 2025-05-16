@@ -21,17 +21,12 @@ or with yarn
 yarn add react-pdf-flipbook-viewer
 ```
 ## Tailwind Setup
-This Library requires Tailwindcss. Add the following to your tailwind.config.js :
+This Library requires Tailwindcss. Add the following line to your tailwind.config.js :
 ```js
 module.exports = {
   content: [
-    './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/react-pdf-flipbook-viewer/**/*.{js,ts,jsx,tsx}',
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
 }
 ```
 ## Usage

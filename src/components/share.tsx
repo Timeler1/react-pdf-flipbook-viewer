@@ -46,7 +46,7 @@ export default function Share ({ asChild, shareUrl, children: triggerSlotChildre
     );
 
     return (
-        <Dropdown trigger={triggerElement} contentClassName="w-auto" align="right">
+        <Dropdown trigger={triggerElement} contentClassName="w-auto bg-primary" align="right">
             {(closeDropdown) => (
                 <>
                     <div

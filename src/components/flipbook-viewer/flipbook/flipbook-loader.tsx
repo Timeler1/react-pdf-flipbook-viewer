@@ -38,10 +38,10 @@ const FlipbookLoader = forwardRef<HTMLDivElement, FlipbookLoaderProps>(({ pdfDet
             newViewRange = viewRange
         }
         setViewRange(newViewRange);
-        setViewerStates({
-            ...viewerStates,
+        setViewerStates(prev => ({
+            ...prev,
             currentPageIndex: e.data,
-        });
+        }));
     }, [viewerStates, viewRange, setViewRange, setViewerStates, pdfDetails.totalPages]);
 
     return (

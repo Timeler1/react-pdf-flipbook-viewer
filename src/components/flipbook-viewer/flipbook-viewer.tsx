@@ -14,34 +14,42 @@ import React from "react";
 import { PDFDetails } from "../../lib/definitions";
 
 const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare = false }: { pdfUrl: string, shareUrl?: string, className?: string, disableShare?: boolean }) => {
-    const containerRef = useRef<HTMLDivElement>(null); // For full screen container
-    const flipbookRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null)
+    const flipbookRef = useRef<any>(null);
     const [pdfLoading, setPdfLoading] = useState(true);
-    const [pdfDetails, setPdfDetails] = useState<PDFDetails | null>(null);;
+    const [pdfDetails, setPdfDetails] = useState<PDFDetails | null>(null);
     const [viewerStates, setViewerStates] = useState({
         currentPageIndex: 0,
         zoomScale: 1,
     });
 
-    // Setting pdf details on document load >>>>>>>>>
-    const onDocumentLoadSuccess = useCallback(async (document: { getPage: (arg0: number) => any; numPages: number; }) => {
+    const onDocumentLoadSuccess = useCallback(async (pdfProxy: any) => {
         try {
-            const pageDetails = await document.getPage(1);
+            const page = await pdfProxy.getPage(1);
             setPdfDetails({
-                totalPages: document.numPages,
-                width: pageDetails.view[2],
-                height: pageDetails.view[3],
+                totalPages: pdfProxy.numPages,
+                width: page.view[2],
+                height: page.view[3],
             });
             setPdfLoading(false);
         } catch (error) {
-            console.error('Error loading document:', error);
+            console.error('Error loading document page details:', error);
+            setPdfLoading(false); // Ensure loading stops even on error
         }
     }, []);
 
     return (
-        <div ref={containerRef} className={cn("relative h-[20.163rem] xs:h-[25.163rem] lg:h-[33.163rem] xl:h-[34.66rem] bg-foreground w-full overflow-hidden", className ?? '')}>
+        <div ref={containerRef} className={cn("relative h-[30.244rem] xs:h-[37.744rem] lg:h-[49.744rem] xl:h-[51.99rem] bg-gray-800 w-full overflow-hidden", className ?? '')}> {/* Changed bg-foreground to something like bg-gray-800 for contrast if foreground is light */}
             {pdfLoading && <PdfLoading />}
-            <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<></>} >
+            <Document
+                file={pdfUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={(error) => {
+                    console.error('Failed to load PDF:', error.message);
+                    setPdfLoading(false); // Stop loading on error
+                }}
+                loading={<></>}
+            >
                 {(pdfDetails && !pdfLoading) &&
                     <TransformWrapper
                         doubleClick={{ disabled: true }}
@@ -50,9 +58,9 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare = false }: {
                         initialScale={1}
                         minScale={1}
                         maxScale={5}
-                        onTransformed={({ state }) => setViewerStates({ ...viewerStates, zoomScale: state.scale })}
+                        onTransformed={({ state }) => setViewerStates(prev => ({ ...prev, zoomScale: state.scale }))}
                     >
-                        <div className="w-full relative bg-foreground flex flex-col justify-between">
+                        <div className="w-full h-full relative bg-gray-700 flex flex-col">
                             <Flipbook
                                 viewerStates={viewerStates}
                                 setViewerStates={setViewerStates}
